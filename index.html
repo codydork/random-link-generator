@@ -6,23 +6,68 @@
     <title>Random URL Generator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f4f8;
-            padding: 40px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f5;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
+            height: 100vh;
         }
+
         .container {
-            background: #fff;
+            background-color: #fff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
         }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:focus-visible {
+            outline: 3px solid #0056b3;
+            outline-offset: 3px;
+        }
+
         #urlList {
             text-align: left;
             margin-top: 20px;
@@ -33,66 +78,20 @@
             max-height: 200px;
             overflow-y: auto;
         }
-        button {
-            padding: 10px 20px;
-            margin: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        input, select {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: calc(100% - 24px);
-        }
+
         #customUrlTemplateContainer {
             display: none;
         }
     </style>
-    <script>
-        function generateRandomURL() {
-            // URL generation logic (unchanged)
-        }
-
-        function copyToClipboard() {
-            const copyText = document.getElementById('copyArea');
-            copyText.select();
-            document.execCommand('copy');
-            alert('URLs copied to clipboard!');
-        }
-
-        function handleUrlTypeChange() {
-            const urlType = document.getElementById('urlType').value;
-            const customUrlTemplateContainer = document.getElementById('customUrlTemplateContainer');
-            if (urlType === 'custom') {
-                customUrlTemplateContainer.style.display = 'block';
-            } else {
-                customUrlTemplateContainer.style.display = 'none';
-            }
-        }
-
-        // Hotkey detection for Ctrl + Shift + P
-        document.addEventListener('keydown', function(event) {
-            if (event.ctrlKey && event.shiftKey && event.key === 'P') {
-                window.location.href = 'settings.html'; // Change 'settings.html' to the desired URL
-            }
-        });
-    </script>
 </head>
 <body>
+
     <div class="container">
         <h1>Random URL Generator</h1>
+
         <label for="numLinks">Number of URLs to generate (up to 1000):</label>
         <input type="number" id="numLinks" name="numLinks" min="1" max="1000" value="1">
-        <br>
+
         <label for="urlType">Select URL type:</label>
         <select id="urlType" name="urlType" onchange="handleUrlTypeChange()">
             <option value="standard">Standard</option>
@@ -106,21 +105,48 @@
             <option value="youtube">YouTube</option>
             <option value="bitly">Bitly</option>
         </select>
-        <br>
+
         <div id="customUrlTemplateContainer">
-            <label for="customUrlTemplate">Enter custom URL template (use % for random values, $ for custom characters):</label>
+            <label for="customUrlTemplate">Enter custom URL template:</label>
             <input type="text" id="customUrlTemplate" name="customUrlTemplate" placeholder="https://example.com/%%%%%/$$$$$">
-            <br>
-            <label for="customChars">Enter characters for custom generation (used for $ in template, separated by commas):</label>
+
+            <label for="customChars">Enter characters for custom generation:</label>
             <input type="text" id="customChars" name="customChars" placeholder="a,b,c,1,2,3">
         </div>
-        <br>
+
         <label for="disablePath">Disable Path:</label>
         <input type="checkbox" id="disablePath" name="disablePath">
-        <br>
+
         <button onclick="generateRandomURL()">Generate URLs</button>
         <button onclick="copyToClipboard()">Copy to Clipboard</button>
+
         <div id="urlList"></div>
     </div>
+
+    <script>
+        function generateRandomURL() {
+            // URL generation logic (unchanged)
+        }
+
+        function copyToClipboard() {
+            const copyText = document.getElementById('urlList');
+            navigator.clipboard.writeText(copyText.innerText).then(() => {
+                alert('URLs copied to clipboard!');
+            });
+        }
+
+        function handleUrlTypeChange() {
+            const urlType = document.getElementById('urlType').value;
+            const customUrlTemplateContainer = document.getElementById('customUrlTemplateContainer');
+            customUrlTemplateContainer.style.display = (urlType === 'custom') ? 'block' : 'none';
+        }
+
+        // Hotkey detection for Ctrl + Shift + P
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.shiftKey && event.code === 'KeyP') {
+                window.location.href = 'proxy.html'; // Update the URL as needed
+            }
+        });
+    </script>
 </body>
 </html>
